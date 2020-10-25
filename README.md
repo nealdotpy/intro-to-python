@@ -135,7 +135,10 @@ def populate(sex_selector):
     pop_count = population['count'] = random_integer(5,25)
     for i in range(1, pop_count):
         sex = sex_selector(i)
-        population[sex].append(Person(random_integer(21,84), random_integer(1,99)))
+        population[sex].append(
+        	Person(random_integer(21,84), 
+        	random_integer(1,99))
+        )
 
     return population
 
@@ -170,7 +173,10 @@ def populate(sex_selector: typing.Callable[[int], str]) -> typing.Dict[str, Pers
     pop_count = population['count'] = random_integer(5,25)
     for i in range(1, pop_count):
         sex = sex_selector(i)
-        population[sex].append(Person(random_integer(21,84), random_integer(1,99)))
+        population[sex].append(
+        	Person(random_integer(21,84), 
+        	random_integer(1,99))
+        )
 
     return population
 
