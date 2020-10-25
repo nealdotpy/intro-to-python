@@ -107,8 +107,7 @@ from this point on, you can pretty much follow README.md instructions for your l
 
 please for the love of all that is holy: **follow the [google styleguide](https://google.github.io/styleguide/pyguide.html) for python**.
 
-as i mentioned in the beginning, python type hinting is important for writing clean, easy-readable code.  
-say you wanted to write some code that handled performing some transform on a dataset. let's take a simple example:
+as i mentioned in the beginning, python type hinting is important for writing clean, easy-readable code. let's take a simple example:
 
 ```
 from random import randint as random_integer
