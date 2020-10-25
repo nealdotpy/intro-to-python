@@ -100,3 +100,83 @@ so now that your environment is up and running, you're ready to start coding! th
 in addition, `dotenv` is a commonly used python library to handle environment variables. so if your project requires the handling of secret keys, passphrases, etc., it's advisible to use `dotenv` and a project specific `.env` file in order to load environment variables from the project. this is more secure than having env variables be stored system-wide. 
 
 from this point on, you can pretty much follow README.md instructions for your libraries word for word. see how great this is? 
+
+
+# general pointers 
+
+
+please for the love of all that is holy: **follow the [google styleguide](https://google.github.io/styleguide/pyguide.html) for python**.
+
+as i mentioned in the beginning, python type hinting is important for writing clean, easy-readable code.  
+say you wanted to write some code that handled performing some transform on a dataset. let's take a simple example:
+
+```
+from random import randint as random_integer
+from math import log
+
+class Person:
+    def __init__(self, age, score):
+        self.age = age
+        self.score = score
+
+    def __repr__(self):
+        return f'<age={self.age}, score={self.score}>'
+
+def sex_classifier(criteria):
+    selector = int(log(criteria) * 10) % 2
+    return ['male', 'female'][selector]
+
+def populate(sex_selector):
+    population = {
+        'count': 0,
+        'male': [], 
+        'female': [],
+    }
+    pop_count = population['count'] = random_integer(5,25)
+    for i in range(1, pop_count):
+        sex = sex_selector(i)
+        population[sex].append(Person(random_integer(21,84), random_integer(1,99)))
+
+    return population
+
+print(populate(sex_classifier))
+```
+
+now, just be reading the code, it isn't readily apparent that i am passing a funtion into populate. i can make the code more readble by adding the following:
+
+```
+from random import randint as random_integer
+from math import log
+import typing
+
+class Person:
+    def __init__(self, age: int, score: int):
+        self.age = age
+        self.score = score
+
+    def __repr__(self):
+        return f'<age={self.age}, score={self.score}>'
+
+def sex_classifier(criteria: int) -> str:
+    selector = int(log(criteria) * 10) % 2
+    return ['male', 'female'][selector]
+
+def populate(sex_selector: typing.Callable[[int], str]) -> typing.Dict[str, Person]:
+    population = {
+        'count': 0,
+        'male': [], 
+        'female': [],
+    }
+    pop_count = population['count'] = random_integer(5,25)
+    for i in range(1, pop_count):
+        sex = sex_selector(i)
+        population[sex].append(Person(random_integer(21,84), random_integer(1,99)))
+
+    return population
+
+print(populate(sex_classifier))
+```
+
+while this may appear to be more confusing, i assure you it will be a godsend at some point. clearly, you can now read the code without even seeing the implementation for `sex_classifier`. by looking at `populate`'s type hinting, it becomes clear that a callable (function) is being passed in; in addition, it takes a single int argument and returns a string! 
+
+now python won't throw "compile" time errors. this is merely a tool to help write good code. `pydantic` on the other hand will mimick static-typing. it will enforce types that are declared via `typing`. so i highly recommend you adopt this paradigm of coding in python. it'll put you significantly ahead of the curve!
